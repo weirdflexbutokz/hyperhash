@@ -6,11 +6,16 @@ document.getElementById('login-form').addEventListener('submit', async function 
     const res = await fetch('/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
+      credentials: 'include' // Permite enviar y recibir cookies de sesión
     });
     const data = await res.json();
-    // Maneja la respuesta aquí (redirección, mostrar error, etc.)
     console.log(data);
+    if (res.ok && data.message === 'Login exitoso') {
+      window.location.href = '/';
+    } else {
+      alert(data.error || 'Error en login');
+    }
   } catch (err) {
     console.error('Error en login:', err);
   }

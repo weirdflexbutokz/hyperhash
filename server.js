@@ -7,6 +7,8 @@ import registerRouter from "./routes/register.js";
 import loginRouter from "./routes/login.js";
 import session from 'express-session';
 import { createClient } from 'redis';
+import { requireAuth } from './middleware/auth.js'
+import morgan from 'morgan';
 
 // Definicion de variables
 const app = express();
@@ -24,6 +26,12 @@ const pool = mysql.createPool({
 // Configuracion Express
 app.use(express.static("public"));
 app.use(express.json());
+app.use(morgan('combined'));
+
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Body:`, req.body);
+  next();
+});
 
 const redisClient = createClient();
 redisClient.connect().catch(console.error);
@@ -41,6 +49,10 @@ app.use(session({
 }));
 
 // Rutas
+
+app.get("/", requireAuth, (req, res) => {
+  res.send("Bienvenido a la página de inicio");
+});
 app.use(registerRouter);
 app.use(loginRouter);
 
