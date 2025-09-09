@@ -1,0 +1,19 @@
+{
+  "name": "hyperhash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hashing.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.4",
+    "socket.io": "^4.8.1"
+  }
+}

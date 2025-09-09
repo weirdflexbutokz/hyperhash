@@ -1,0 +1,4 @@
+node_modules
+wordlists
+public/wordlists
+package-lock.json
