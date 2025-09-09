@@ -24,9 +24,20 @@ export class User {
     if (rows.length === 0) return null;
     return new User(rows[0]);
   }
+
+  static async authenticate(pool, name, password) {
+    const [rows] = await pool.execute(
+      'SELECT * FROM users WHERE name = ? AND password = ?',
+      [name, password]
+    );
+    if (rows.length === 0) return null;
+    return new User(rows[0]);
+  }
+
   static async deleteAll(pool) {
     await pool.execute('DELETE FROM users');
   }
+
   static async deleteById(pool, id) {
     await pool.execute(
       'DELETE FROM users WHERE id = ?',

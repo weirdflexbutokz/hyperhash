@@ -5,6 +5,8 @@ import mysql from 'mysql2/promise';
 import { Hash } from './models/hashing.js';
 import registerRouter from "./routes/register.js";
 import loginRouter from "./routes/login.js";
+import session from 'express-session';
+import { createClient } from 'redis';
 
 // Definicion de variables
 const app = express();
@@ -22,6 +24,21 @@ const pool = mysql.createPool({
 // Configuracion Express
 app.use(express.static("public"));
 app.use(express.json());
+
+const redisClient = createClient();
+redisClient.connect().catch(console.error);
+
+// Para ES Modules, usa la clase directamente desde el paquete:
+const { RedisStore } = await import('connect-redis');
+
+const store = new RedisStore({ client: redisClient });
+app.use(session({
+  store,
+  secret: 'tu_secreto_seguro',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, httpOnly: true, maxAge: 86400000 }
+}));
 
 // Rutas
 app.use(registerRouter);
