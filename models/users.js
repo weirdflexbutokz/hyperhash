@@ -31,7 +31,7 @@ export class User {
       [name, password]
     );
     if (rows.length === 0) return null;
-    return rows;
+    return rows[0];
   }
 
   static async deleteAll(pool) {

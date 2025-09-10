@@ -9,13 +9,14 @@ import session from 'express-session';
 import { createClient } from 'redis';
 import { requireAuth } from './middleware/auth.js'
 import morgan from 'morgan';
+const { RedisStore } = await import('connect-redis');
 
 // Definicion de variables
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Conexion BBDD
+// MySQL
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'datadiego',
@@ -23,22 +24,11 @@ const pool = mysql.createPool({
   database: 'hyperhash',
 });
 
-// Configuracion Express
-app.use(express.static("public"));
-app.use(express.json());
-app.use(morgan('combined'));
-
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Body:`, req.body);
-  next();
-});
-
+// Redis
 const redisClient = createClient();
 redisClient.connect().catch(console.error);
 
-// Para ES Modules, usa la clase directamente desde el paquete:
-const { RedisStore } = await import('connect-redis');
-
+// Sesiones
 const store = new RedisStore({ client: redisClient });
 app.use(session({
   store,
@@ -48,10 +38,19 @@ app.use(session({
   cookie: { secure: false, httpOnly: true, maxAge: 86400000 }
 }));
 
-// Rutas
+// Configuracion
+app.use(express.static("public"));
+app.use(express.json());
+app.use(morgan('combined'));
 
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Body:`, req.body);
+  next();
+});
+
+// Rutas
 app.get("/", requireAuth, (req, res) => {
-  res.send("Bienvenido a la página de inicio");
+  res.sendFile(process.cwd() + "/pages/hyperhash.html");
 });
 app.use(registerRouter);
 app.use(loginRouter);

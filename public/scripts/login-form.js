@@ -7,11 +7,9 @@ document.getElementById('login-form').addEventListener('submit', async function 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
-      credentials: 'include' // Permite enviar y recibir cookies de sesión
     });
     const data = await res.json();
-    console.log(data);
-    if (res.ok && data.message === 'Login exitoso') {
+    if (res.ok) {
       window.location.href = '/';
     } else {
       alert(data.error || 'Error en login');
