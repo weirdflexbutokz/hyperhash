@@ -49,14 +49,14 @@ async function main() {
   // await User.create(pool, "user1", "1234");
   // await User.create(pool, "user2", "1234");
   // await User.create(pool, "user3", "1234");
-  console.log(await Hash.create(pool, 'wordlists-common', 10));
-  console.log(await Hash.create(pool, 'wordlists-common', 10));
-  console.log(await Hash.create(pool, 'wordlists-common', 10));
-  console.log(await Hash.create(pool, 'wordlists-starter', 1));
-  console.log(await Hash.create(pool, 'wordlists-starter', 1));
-  console.log(await Hash.create(pool, 'wordlists-starter', 1));
-  console.log(await Hash.create(pool, 'wordlists-starter', 1));
-  console.log(await Hash.create(pool, 'wordlists-starter', 1));
+  // console.log(await Hash.create(pool, 'wordlists-common', 10));
+  // console.log(await Hash.create(pool, 'wordlists-common', 10));
+  // console.log(await Hash.create(pool, 'wordlists-common', 10));
+  // console.log(await Hash.create(pool, 'wordlists-starter', 1));
+  // console.log(await Hash.create(pool, 'wordlists-starter', 1));
+  // console.log(await Hash.create(pool, 'wordlists-starter', 1));
+  // console.log(await Hash.create(pool, 'wordlists-starter', 1));
+  // console.log(await Hash.create(pool, 'wordlists-starter', 1));
   await pool.end();
   console.log('Esquema ejecutado correctamente en MySQL');
 }

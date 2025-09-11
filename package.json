@@ -5,7 +5,7 @@
   "main": "hashing.js",
   "scripts": {
     "dev": "nodemon -e js,html,css,json server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive testing/*.test.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,13 @@
     "express-session": "^1.18.2",
     "morgan": "^1.10.1",
     "mysql2": "^3.14.4",
+    "node-fetch": "^3.3.2",
     "redis": "^5.8.2",
     "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "chai": "^6.0.1",
+    "mocha": "^11.7.2",
+    "sinon": "^21.0.0"
   }
 }

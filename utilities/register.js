@@ -1,4 +1,4 @@
-import {registerUser} from "../utilities/registerUser.js"
+import {registerUser} from "./registerUser.js"
 
 await registerUser("user1", "test")
 await registerUser("user2", "test")
