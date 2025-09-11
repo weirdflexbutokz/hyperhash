@@ -14,8 +14,6 @@ describe('Registro de usuario', () => {
     const text = await res.text();
     expect(text).to.equal('User registered');
 
-    // Elimina el usuario tras el test usando el modelo User
-    // Requiere acceso al pool de la base de datos
     const { User } = await import('../models/users.js');
     const { createPool } = await import('../db/pool.js');
     const pool = await createPool();
@@ -23,5 +21,4 @@ describe('Registro de usuario', () => {
     await pool.end();
   });
 
-  // Puedes agregar más tests para casos de error, usuario existente, etc.
 });
