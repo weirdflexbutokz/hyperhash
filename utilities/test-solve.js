@@ -3,13 +3,9 @@ import { Hash } from "../models/hashing.js"
 import { User } from "../models/users.js"
 import { choice } from "./utils.js"
 import mysql from 'mysql2/promise';
+import { createPool } from '../db/pool.js';
 
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'datadiego',
-  password: '1337',
-  database: 'hyperhash',
-});
+const pool = await createPool();
 
 async function main() {
   //clear users

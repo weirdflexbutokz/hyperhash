@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
-import mysql from 'mysql2/promise';
+import { createPool } from './db/pool.js';
 import { Hash } from './models/hashing.js';
 import registerRouter from "./routes/register.js";
 import loginRouter from "./routes/login.js";
@@ -9,7 +9,7 @@ import session from 'express-session';
 import { createClient } from 'redis';
 import { requireAuth } from './middleware/auth.js'
 import morgan from 'morgan';
-const { RedisStore } = await import('connect-redis');
+const { RedisStore } = (await import('connect-redis'));
 
 // Definicion de variables
 const app = express();
@@ -17,12 +17,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 // MySQL
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'datadiego',
-  password: '1337',
-  database: 'hyperhash',
-});
+const pool = await createPool();
 
 // Redis
 const redisClient = createClient();
@@ -68,4 +63,4 @@ server.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
 
-export { pool }
+export { pool };

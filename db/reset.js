@@ -2,15 +2,16 @@ import mysql from 'mysql2/promise';
 import dotenv from "dotenv";
 import { User } from "../models/users.js"
 import { Hash } from "../models/hashing.js"
+import { createPool } from './pool.js';
 dotenv.config();
 
 async function main() {
   // Creamos el pool solo para este script y habilitamos múltiples sentencias
-  const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'datadiego',
-    password: process.env.DB_PASS || '1337',
-    database: process.env.DB_NAME || 'hyperhash',
+  const pool = await mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     multipleStatements: true
   });
 
@@ -45,9 +46,9 @@ async function main() {
     INSERT INTO game_mode (name) VALUES ('wordlists-starter');
     INSERT INTO game_mode (name) VALUES ('wordlists-common');
   `);
-  await User.create(pool, "user1", "1234");
-  await User.create(pool, "user2", "1234");
-  await User.create(pool, "user3", "1234");
+  // await User.create(pool, "user1", "1234");
+  // await User.create(pool, "user2", "1234");
+  // await User.create(pool, "user3", "1234");
   console.log(await Hash.create(pool, 'wordlists-common', 10));
   console.log(await Hash.create(pool, 'wordlists-common', 10));
   console.log(await Hash.create(pool, 'wordlists-common', 10));
