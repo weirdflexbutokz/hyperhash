@@ -55,6 +55,16 @@ export class Hash {
   }
 
   static async trySolve(pool, player_name, hash, solution) {
+    // Asegura que el usuario existe
+    const [userRows] = await pool.execute('SELECT id FROM users WHERE name = ?', [player_name]);
+    let userId;
+    if (userRows.length === 0) {
+      // Si no existe, lo crea con una contraseña dummy
+      const [result] = await pool.execute('INSERT INTO users (name, password) VALUES (?, ?)', [player_name, 'dummy']);
+      userId = result.insertId;
+    } else {
+      userId = userRows[0].id;
+    }
     const uncracked = await this.getUncracked(pool);
     const target = uncracked.find(row => row.hash === hash);
     if (!target) throw new Error('Hash not found');
@@ -63,8 +73,8 @@ export class Hash {
     const isCorrect = compareFn.call(this, solution, target.hash);
     if (isCorrect) {
       await pool.execute(
-        'UPDATE hashes SET player_id = (SELECT id FROM users WHERE name = ?) WHERE hash = ?',
-        [player_name, hash]
+        'UPDATE hashes SET player_id = ? WHERE hash = ?',
+        [userId, hash]
       );
     }
     return isCorrect;

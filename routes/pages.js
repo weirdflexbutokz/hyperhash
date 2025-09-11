@@ -14,4 +14,8 @@ router.get("/", requireAuth, (req, res) => {
   res.sendFile(process.cwd() + "/pages/hyperhash.html");
 });
 
+router.get("/leaderboard", requireAuth, (req, res) => {
+  res.sendFile(process.cwd() + "/pages/leaderboard.html");
+});
+
 export default router;

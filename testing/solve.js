@@ -1,20 +1,14 @@
 //import models
 import { Hash } from "../models/hashing.js"
-import { User } from "../models/users.js"
-import { choice } from "./utils.js"
-import mysql from 'mysql2/promise';
+import { choice } from "../utilities/utils.js"
 import { createPool } from '../db/pool.js';
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const pool = await createPool();
 
 async function main() {
-  //clear users
-  await Hash.deleteAll(pool);
-  await User.deleteAll(pool);
-  //clear hashes
-  await User.create(pool, "user1", "1234");
-  await User.create(pool, "user2", "1234");
-  await User.create(pool, "user3", "1234");
   console.log(await Hash.create(pool, 'wordlists-common', 10));
   console.log(await Hash.create(pool, 'wordlists-common', 10));
   console.log(await Hash.create(pool, 'wordlists-common', 10));
