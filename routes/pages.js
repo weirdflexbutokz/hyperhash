@@ -1,7 +1,5 @@
-import { User } from '../models/users.js';
-import { Hash } from '../models/hashing.js'
-import { pool } from '../server.js';
 import express from "express";
+import { requireAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get("/register", (req, res) => {
@@ -10,6 +8,10 @@ router.get("/register", (req, res) => {
 
 router.get("/login", (req, res) => {
   res.sendFile(process.cwd() + "/pages/login.html");
+});
+
+router.get("/", requireAuth, (req, res) => {
+  res.sendFile(process.cwd() + "/pages/hyperhash.html");
 });
 
 export default router;

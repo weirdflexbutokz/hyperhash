@@ -28,5 +28,6 @@ CREATE TABLE IF NOT EXISTS hashes (
 INSERT INTO game_mode (name) VALUES ('wordlists-starter');
 INSERT INTO game_mode (name) VALUES ('wordlists-common');
 
-CREATE USER 'datadiego'@'localhost' IDENTIFIED BY '1337';
-GRANT ALL PRIVILEGES ON hyperhash.* TO 'datadiego'@'localhost';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY '1337';
+GRANT ALL PRIVILEGES ON hyperhash.* TO 'admin'@'localhost';
+FLUSH PRIVILEGES;
