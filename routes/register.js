@@ -8,7 +8,7 @@ const router = express.Router()
 router.post("/register", async (req, res) => {
   const { username, password } = req.body
   console.log(username,password)
-  const user = await User.create(pool, username, Hash.encryptMD5(password))
+  const user = await User.create(pool, username, Hash.bcryptHash(password))
   res.status(201).send("User registered")
 })
 
