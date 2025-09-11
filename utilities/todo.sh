@@ -1,0 +1,1 @@
+grep -r "TODO" --exclude-dir .git --exclude-dir node_modules --exclude-dir wordlists --exclude todo.sh

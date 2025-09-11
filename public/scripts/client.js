@@ -2,7 +2,8 @@
 const socket = io();
 
 socket.on('hashes', hashes => {
-  const list = document.getElementById('hash-list');
+  const list = document.getElementById('hashes');
+  if (!list) return;
   list.innerHTML = '';
   hashes.forEach(h => {
     const li = document.createElement('li');
@@ -12,5 +13,24 @@ socket.on('hashes', hashes => {
 });
 
 window.onload = () => {
-  document.body.innerHTML = '<h2>Hashes sin romper</h2><ul id="hash-list"></ul>';
+  const hashList = document.getElementById('hash-list');
+
+  const form = document.getElementById('hash-form');
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const input = document.getElementById('input-text');
+      const value = input.value.trim();
+      const [hash, password] = value.split(':');
+      if (input && value) {
+        await fetch('/api/crack', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hash, password })
+        });
+        input.value = '';
+        //TODO: Manejar la respuesta de /crack
+      }
+    });
+  }
 };
