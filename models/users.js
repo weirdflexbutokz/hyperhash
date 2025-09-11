@@ -1,52 +1,27 @@
 export class User {
-  static async create(pool, name, password) {
-    const [result] = await pool.execute(
-      'INSERT INTO users (name, password) VALUES (?, ?)',
-      [name, password]
-    );
-    return new User({ id: result.insertId, name, password });
-  }
+  static create = async (pool, name, password) => {
+    const [result] = await pool.execute('INSERT INTO users (name, password) VALUES (?, ?)', [name, password]);
+    return { id: result.insertId, name, password };
+  };
 
-  static async findByName(pool, name) {
-    const [rows] = await pool.execute(
-      'SELECT * FROM users WHERE name = ?',
-      [name]
-    );
-    if (rows.length === 0) return null;
-    return new User(rows[0]);
-  }
+  static findByName = async (pool, name) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE name = ?', [name]);
+    return rows.length ? rows[0] : null;
+  };
 
-  static async findById(pool, id) {
-    const [rows] = await pool.execute(
-      'SELECT * FROM users WHERE id = ?',
-      [id]
-    );
-    if (rows.length === 0) return null;
-    return new User(rows[0]);
-  }
+  static findById = async (pool, id) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE id = ?', [id]);
+    return rows.length ? rows[0] : null;
+  };
 
-  static async authenticate(pool, name, password) {
-    const [rows] = await pool.execute(
-      'SELECT * FROM users WHERE name = ? AND password = ?',
-      [name, password]
-    );
-    if (rows.length === 0) return null;
-    return rows[0];
-  }
+  static authenticate = async (pool, name, password) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE name = ? AND password = ?', [name, password]);
+    return rows.length ? rows[0] : null;
+  };
 
-  static async deleteAll(pool) {
-    await pool.execute('DELETE FROM users');
-  }
+  static deleteAll = async pool => pool.execute('DELETE FROM users');
 
-  static async deleteById(pool, id) {
-    await pool.execute(
-      'DELETE FROM users WHERE id = ?',
-      [id]
-    );
-  }
+  static deleteById = async (pool, id) => pool.execute('DELETE FROM users WHERE id = ?', [id]);
 
-  static async getAll(pool) {
-    const [result] = await pool.execute('SELECT * FROM users')
-    return result
-  }
+  static getAll = async pool => (await pool.execute('SELECT * FROM users'))[0];
 }
