@@ -4,6 +4,7 @@
   "description": "",
   "main": "hashing.js",
   "scripts": {
+    "dev": "nodemon -e js,html,css,json server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
