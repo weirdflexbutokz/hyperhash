@@ -1,19 +1,25 @@
 // Simple client for Socket.IO y Express
 const socket = io();
 
-socket.on('hashes', hashes => {
-  const list = document.getElementById('hashes');
-  if (!list) return;
-  list.innerHTML = '';
-  hashes.forEach(h => {
-    const li = document.createElement('li');
-    li.textContent = `${h.hash} (${h.algo}) - ${h.points} puntos`;
-    list.appendChild(li);
-  });
-});
+document.addEventListener('DOMContentLoaded', function () {
+  const lastCracked = document.getElementById('last-cracked');
 
-window.onload = () => {
-  const hashList = document.getElementById('hash-list');
+  socket.on('hashes', hashes => {
+    const list = document.getElementById('hashes');
+    if (!list) return;
+    list.innerHTML = '';
+    hashes.forEach(h => {
+      const li = document.createElement('li');
+      li.textContent = `${h.hash} (${h.algo}) - ${h.points} puntos`;
+      list.appendChild(li);
+    });
+  });
+
+  socket.on('hashCracked', ({ playerName, hash, password }) => {
+    if (lastCracked) {
+      lastCracked.textContent = `${playerName} ha roto el hash ${hash} con la contraseña ${password}`;
+    }
+  });
 
   const form = document.getElementById('hash-form');
   if (form) {
@@ -33,4 +39,4 @@ window.onload = () => {
       }
     });
   }
-};
+});
