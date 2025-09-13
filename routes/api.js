@@ -7,7 +7,8 @@ const router = express.Router();
 router.get('/hashes', async (req, res) => {
   try {
     const hashes = await Hash.getUncracked(pool);
-    res.json(hashes);
+    
+    res.json(hashes_output);
   } catch (err) {
     res.status(500).json({ error: 'Error obteniendo hashes' });
   }

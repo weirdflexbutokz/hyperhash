@@ -9,9 +9,6 @@ router.post("/register", async (req, res) => {
   const { username, password } = req.body
   console.log(username,password)
   const user = await User.create(pool, username, Hash.bcryptHash(password))
-  if (!user) {
-    return res.status(409).send("User already exists")
-  }
   res.status(201).send("User registered")
 })
 

@@ -82,7 +82,10 @@ export class Hash {
 
   static async getUncracked(pool) {
     const [rows] = await pool.execute(
-      'SELECT * FROM hashes WHERE player_id IS NULL'
+      `SELECT h.id, h.hash, h.word, h.points, h.algo, gm.name as mode
+       FROM hashes h
+       JOIN game_mode gm ON h.mode_id = gm.id
+       WHERE h.player_id IS NULL`
     );
     return rows;
   }

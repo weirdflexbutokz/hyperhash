@@ -1,4 +1,3 @@
-// Simple client for Socket.IO y Express
 const socket = io();
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -8,10 +7,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const list = document.getElementById('hashes');
     if (!list) return;
     list.innerHTML = '';
+    // Agrupar los hashes por su campo 'mode'
+    const grouped = {};
     hashes.forEach(h => {
-      const li = document.createElement('li');
-      li.textContent = `${h.hash} (${h.algo}) - ${h.points} puntos`;
-      list.appendChild(li);
+      if (!grouped[h.mode]) grouped[h.mode] = [];
+      grouped[h.mode].push(h);
+    });
+    Object.entries(grouped).forEach(([mode, hashes]) => {
+      const modeHeader = document.createElement('h3');
+      modeHeader.textContent = `Modo: ${mode}`;
+      list.appendChild(modeHeader);
+      const ul = document.createElement('ul');
+      hashes.forEach(h => {
+        const li = document.createElement('li');
+        li.textContent = `${h.hash} - ${h.points} puntos`;
+        ul.appendChild(li);
+      });
+      list.appendChild(ul);
     });
   });
 

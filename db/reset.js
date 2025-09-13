@@ -15,7 +15,6 @@ async function main() {
     multipleStatements: true
   });
 
-  //TODO Añadir campo APIKEY a la tabla users
   await pool.query(`
     DROP TABLE IF EXISTS hashes;
     DROP TABLE IF EXISTS game_mode;
@@ -24,7 +23,8 @@ async function main() {
     CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(100) NOT NULL UNIQUE,
-      password VARCHAR(100) NOT NULL
+      password VARCHAR(100) NOT NULL,
+      apikey VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS game_mode (

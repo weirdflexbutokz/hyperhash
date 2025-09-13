@@ -1,15 +1,14 @@
 import { compareBcrypt } from '../utilities/hashing.js';
-// TODO añadir al modelo método para regenerar APIKEY
-// TODO modificar el modelo para añadir una APIKEY al crear un usuario
 
 export class User {
   static create = async (pool, name, password) => {
     try {
+      const apikey = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
       const [result] = await pool.execute(
-        'INSERT INTO users (name, password) VALUES (?, ?)',
-        [name, password]
+        'INSERT INTO users (name, password, apikey) VALUES (?, ?, ?)',
+        [name, password, apikey]
       );
-      return { id: result.insertId, name, password } || null;
+      return { id: result.insertId, name, password, apikey } || null;
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY') {
         return null;
@@ -46,4 +45,11 @@ export class User {
   static deleteByName = async (pool, name) => pool.execute('DELETE FROM users WHERE name = ?', [name]);
 
   static getAll = async pool => (await pool.execute('SELECT * FROM users'))[0];
+
+  static async regenerateApiKey(pool, userId) {
+    // Genera una nueva APIKEY aleatoria
+    const newApiKey = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+    await pool.execute('UPDATE users SET apikey = ? WHERE id = ?', [newApiKey, userId]);
+    return newApiKey;
+  }
 }

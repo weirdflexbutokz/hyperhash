@@ -31,7 +31,15 @@ app.use('/api', apiRouter);
 io.on('connection', async (socket) => {
   console.log("Cliente conectado");
   const hashes = await Hash.getUncracked(pool);
-  socket.emit('hashes', hashes);
+  //send just id. hash and points
+  const hashes_output = hashes.map(hash => ({
+    id: hash.id,
+    hash: hash.hash,
+    points: hash.points,
+    mode: hash.mode
+  }));
+  console.log(hashes_output);
+  socket.emit('hashes', hashes_output);
 });
 
 const PORT = process.env.PORT;
