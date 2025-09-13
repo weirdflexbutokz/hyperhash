@@ -129,6 +129,15 @@ export class Hash {
     return rows;
   }
 
+  static async generateHashes(pool) {
+    for (let i = 0; i < 7; i++) {
+      await Hash.create(pool, 'wordlists-common', 10);
+    }
+    for (let i = 0; i < 9; i++) {
+      await Hash.create(pool, 'wordlists-starter', 1);
+    }
+  }
+
   static encryptMD5(input) {
     return crypto.createHash('md5').update(input).digest('hex');
   }

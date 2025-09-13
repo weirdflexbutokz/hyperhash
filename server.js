@@ -38,9 +38,24 @@ io.on('connection', async (socket) => {
     points: hash.points,
     mode: hash.mode
   }));
-  console.log(hashes_output);
+  // console.log(hashes_output);
   socket.emit('hashes', hashes_output);
 });
+
+const intervalMinutes = parseInt(process.env.HASH_GENERATION_INTERVAL, 10) || 60;
+
+setInterval(async () => {
+  await Hash.generateHashes(pool);
+  console.log("Generados nuevos hashes");
+  const hashes = await Hash.getUncracked(pool);
+  const hashes_output = hashes.map(hash => ({
+    id: hash.id,
+    hash: hash.hash,
+    points: hash.points,
+    mode: hash.mode
+  }));
+  io.emit('hashes', hashes_output);
+}, intervalMinutes * 60 * 1000);
 
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
