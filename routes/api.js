@@ -1,14 +1,13 @@
 import express from 'express';
 import { Hash } from '../models/hashing.js';
 import { io, pool } from '../server.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-// TODO añadir autenticacion a endpoints
 router.get('/hashes', async (req, res) => {
   try {
     const hashes = await Hash.getUncracked(pool);
-    
-    res.json(hashes_output);
+    res.json(hashes);
   } catch (err) {
     res.status(500).json({ error: 'Error obteniendo hashes' });
   }
@@ -23,7 +22,7 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-router.post('/crack', async (req, res) => {
+router.post('/crack', requireAuth, async (req, res) => {
   const { hash, password } = req.body;
   const playerName = req.session.username;
   const resultado = await Hash.trySolve(pool, playerName, hash, password);

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const list = document.getElementById('hashes');
     if (!list) return;
     list.innerHTML = '';
-    // Agrupar los hashes por su campo 'mode'
     const grouped = {};
     hashes.forEach(h => {
       if (!grouped[h.mode]) grouped[h.mode] = [];
@@ -47,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
           body: JSON.stringify({ hash, password })
         });
         input.value = '';
-        //TODO: Manejar la respuesta de /crack
       }
     });
   }
