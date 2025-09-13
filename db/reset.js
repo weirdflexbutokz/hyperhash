@@ -15,6 +15,7 @@ async function main() {
     multipleStatements: true
   });
 
+  //TODO Añadir campo APIKEY a la tabla users
   await pool.query(`
     DROP TABLE IF EXISTS hashes;
     DROP TABLE IF EXISTS game_mode;

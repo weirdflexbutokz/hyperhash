@@ -4,3 +4,5 @@ export function requireAuth(req, res, next) {
   }
   res.status(401).redirect('/login');
 }
+
+// TODO añadir autenticacion con APIKEY de usuario

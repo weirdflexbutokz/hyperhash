@@ -1,4 +1,6 @@
 import { compareBcrypt } from '../utilities/hashing.js';
+// TODO añadir al modelo método para regenerar APIKEY
+// TODO modificar el modelo para añadir una APIKEY al crear un usuario
 
 export class User {
   static create = async (pool, name, password) => {
