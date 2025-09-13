@@ -2,11 +2,18 @@ import { compareBcrypt } from '../utilities/hashing.js';
 
 export class User {
   static create = async (pool, name, password) => {
-    const [result] = await pool.execute(
-      'INSERT INTO users (name, password) VALUES (?, ?)',
-      [name, password]
-    );
-    return { id: result.insertId, name, password };
+    try {
+      const [result] = await pool.execute(
+        'INSERT INTO users (name, password) VALUES (?, ?)',
+        [name, password]
+      );
+      return { id: result.insertId, name, password } || null;
+    } catch (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        return null;
+      }
+      throw err;
+    }
   };
 
   static authenticate = async (pool, name, password) => {
